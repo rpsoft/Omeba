@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import QComponent from './qComponent'
 import QSettings from './qSettings'
-
+import QAdder from './qAdder'
 
 export default class Stream extends Component {
 
@@ -77,10 +77,11 @@ export default class Stream extends Component {
           if ( qCode == selqs[i].qCode )
             found = true
         }
-        if ( !found )
+        if ( !found ) {
           selqs.push({qCode : "newQuestionCode", qDescription : "LA OSTIA!"})
+          this.setState({selectedQuestions : selqs})
+        }
 
-        this.setState({selectedQuestions : selqs})
   }
 
 
@@ -109,7 +110,7 @@ export default class Stream extends Component {
 
               }
 
-
+              <QAdder />
 
       </div>
     );

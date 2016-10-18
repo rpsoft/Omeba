@@ -38,11 +38,11 @@ export default class SideMenu extends Component {
         backgroundColor:"#aaaaaa",
         padding : "5px 5px 5px",
       }}>
-        <RaisedButton icon={<ContentAdd />} style={buttonStyle} fullWidth={true}/>
-        <RaisedButton icon={<ContentSave />} style={buttonStyle} fullWidth={true}/>
+        <RaisedButton icon={<ContentAdd />} style={buttonStyle} fullWidth={true} title="Add new stream"/>
+        <RaisedButton icon={<ContentSave />} style={buttonStyle} fullWidth={true} title="Save current experiment"/>
         <hr/>
-        <RaisedButton icon={<ActionReceipt />} style={buttonStyle} fullWidth={true}/>
-        <RaisedButton icon={<FileDownload />} style={buttonStyle} fullWidth={true}/>
+        <RaisedButton icon={<ActionReceipt />} style={buttonStyle} fullWidth={true} title="Print report"/>
+        <RaisedButton icon={<FileDownload />} style={buttonStyle} fullWidth={true} title="Download Data as CSV"/>
 
       </Card>
       </div>

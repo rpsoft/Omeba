@@ -4,6 +4,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 import AvEqualizer from 'material-ui/svg-icons/av/equalizer';
+import ImageGridOn from 'material-ui/svg-icons/image/grid-on';
+
 
 export default class QComponent extends Component {
 
@@ -31,8 +33,10 @@ export default class QComponent extends Component {
                      "no","no","no","no","no","maybe","maybe","maybe","maybe","maybe","maybe","maybe","maybe",
                      "maybe","other","other","other","other","other","other","other","other","other","other","other"];
     this.state = {
+      qWave : "Wave1",
       qCode : props.qCode,
       qDescription : "Q.Bx_7 (Combined files of interest) Proportion - total content types of interest downloaded or accessed legally in the last 3 months (presuming paid as legal) (Rank 780)",
+      qRoot : "the root question it comes from.",
       qData : falseData,
       qFilters: {
         include : [],
@@ -62,6 +66,11 @@ export default class QComponent extends Component {
 
 
   render() {
+
+
+    const buttonStyleIE = {
+      width:25, height:25, minWidth:25,margin:2
+    };
 
     const buttonStyle = {
       width:25, height:25,
@@ -104,8 +113,12 @@ export default class QComponent extends Component {
               <RaisedButton icon={<AvEqualizer />} style={buttonStyle} fullWidth={true}/>
         </span>
 
+        <span style={topButtons}>
+              <RaisedButton icon={<ImageGridOn />} style={buttonStyle} fullWidth={true}/>
+        </span>
+
         <CardHeader
-        title={this.state.qCode}
+        title={this.state.qWave+" : " +this.state.qCode}
         subtitle={this.state.qDescription}
         subtitleStyle={{wordWrap:"break-word", maxWidth:300,paddingRight:0}}
         textStyle={{paddingRight:15}}
@@ -119,10 +132,16 @@ export default class QComponent extends Component {
             this.state.summarisedData.possibleAnswers.map( (pAnswer,i) => {
                 return <div key={i} style={{fontSize:15}}>
                        <span>
-                         <img src="../../images/include.png" style={{height:20,}}/>
-                         <img src="../../images/exclude.png" style={{height:20,}}/>
+
+                        <span style={{width:25}}>
+                             <RaisedButton icon={<img src="../../images/include.png" style={{height:20,}}/>} style={buttonStyleIE}  onClick={this.deleteQuestion} />
+                         </span>
+                        <span style={{width:25}}>
+                             <RaisedButton icon={<img src="../../images/exclude.png" style={{height:20,}}/>} style={buttonStyleIE}  onClick={this.deleteQuestion} />
+                        </span>
+
                        </span>
-                       <span style={{paddingBottom:2, height:20, verticalAlign:'super',marginLeft:5}}>
+                       <span style={{paddingBottom:2, height:20, verticalAlign:'middle',marginLeft:5}}>
                             {pAnswer+" ["+this.state.summarisedData.dataPointTotals[pAnswer]+"]" }
                        </span>
                       </div>
