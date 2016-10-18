@@ -16,6 +16,7 @@ export default class Stream extends Component {
                      "no","no","no","no","no","maybe","maybe","maybe","maybe","maybe","maybe","maybe","maybe",
                      "maybe","other","other","other","other","other","other","other","other","other","other","other"];
     this.state = {
+      adderVisibility: false,
       refWave : "Wave5",
       selectedQuestions : [
         {
@@ -69,6 +70,7 @@ export default class Stream extends Component {
   }
 
   addQuestion = () => {
+
         var qCode = "newQuestionCode" //for testing
         var selqs = JSON.parse(JSON.stringify(this.state.selectedQuestions));
         var found = false
@@ -82,8 +84,16 @@ export default class Stream extends Component {
           this.setState({selectedQuestions : selqs})
         }
 
+        this.toggleAdder();
   }
 
+  toggleAdder = () => {
+    if ( this.state.adderVisibility ){
+      this.setState({adderVisibility : false})
+    } else {
+      this.setState({adderVisibility : true})
+    }
+  }
 
   render() {
 
@@ -104,13 +114,16 @@ export default class Stream extends Component {
 
               }}>
 
-              <QSettings addQuestion={this.addQuestion}/>
+              <QSettings addQuestion={this.toggleAdder}/>
               {
                   this.state.selectedQuestions.map( (q,i) => <QComponent key={i} deleteQuestion={this.deleteQuestion} qCode={q.qCode}/> )
 
               }
 
-              <QAdder />
+              {
+                this.state.adderVisibility ? <QAdder toggleAdder={this.toggleAdder} questionAdder={this.addQuestion} /> : <div></div>
+              }
+
 
       </div>
     );

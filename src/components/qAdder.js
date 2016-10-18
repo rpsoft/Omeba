@@ -108,8 +108,8 @@ export default class QAdder extends Component {
         </Card>
 
         <CardActions style={{textAlign:"right"}}>
-          <FlatButton label="Cancel" onTouchTap={this.handleExpand} />
-          <FlatButton label="Accept/Add" onTouchTap={this.handleReduce} />
+          <FlatButton label="Cancel" onTouchTap={this.props.toggleAdder} />
+          <FlatButton label="Accept/Add" onTouchTap={this.props.questionAdder} />
         </CardActions>
       </Card>
     );
