@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
+import Workbench from './components/workbench'
+import SideMenu from './components/sideMenu'
+import Heading from './components/heading'
+
 export default class App extends Component {
   render() {
     const style = {
@@ -10,14 +14,16 @@ export default class App extends Component {
 
     return (
       <div>
-        <h1>
-          Hello, world!!!
-        </h1>
-        <RaisedButton label="Primary" primary={true} style={style} />
-        <RaisedButton label="Secondary" secondary={true} style={style} />
-        <span>
-          Adding packages...
-        </span>
+      {
+        // <RaisedButton label="Primary" primary={true} style={style} />
+        // <RaisedButton label="Secondary" secondary={true} style={style} />
+      }
+
+        <Heading />
+
+        <SideMenu />
+
+        <Workbench />
       </div>
     );
   }
