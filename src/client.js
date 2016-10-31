@@ -7,6 +7,19 @@ import { browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer, routerMiddleware, push  } from 'react-router-redux'
 import Routes from './routes';
 
+import { combineReducers, createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+
+import {
+  questions,
+  // groups,
+  // session,
+  // results,
+  // task,
+} from './reducers/questions';
+
+
+
 // The initial state from server-generated HTML
 // have a look to server code.
 const initialState = window.__INITIAL_STATE__ || {}

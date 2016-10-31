@@ -15,19 +15,17 @@ export default class QAdder extends Component {
 
   constructor(props) {
     super(props);
-    var data = [
-                {qCode: "q1a", qDescription: "a super awesome question", qRoot: "the questions about awesomeness", qWaves : ['W1','W2','W3','W4','W5','W6']},
-                {qCode: "q1a2", qDescription: "a super awesome question2", qRoot: "the questions about awesomeness", qWaves : ['W1','W2','W5','W6']},
-                {qCode: "q1a3", qDescription: "a super awesome question4", qRoot: "the questions about awesomeness", qWaves : ['W1','W2','W3','W4','W6']},
-                {qCode: "q1a5", qDescription: "a super awesome question5", qRoot: "the questions about awesomeness", qWaves : ['W1','W3','W4','W5','W6']}
-              ];
+    var data = [];
 
     this.state = {
       expanded: false,
       availableQuestions: data,
     };
+  }
 
+  componentWillMount = () =>{
 
+      // Aqui pides los estados.
   }
 
   handleExpandChange = (expanded) => {
