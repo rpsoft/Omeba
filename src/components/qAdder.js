@@ -10,16 +10,44 @@ import ContentAddBox from 'material-ui/svg-icons/content/add-box';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 
 import TextField from 'material-ui/TextField';
+import { connect } from 'react-redux'
+import QAdderQuestion from './qAdderQuestion'
 
-export default class QAdder extends Component {
+function tokensInText (tokens, text) {
+  try {
+      if ( text.includes("GENDER")){
+        console.log("FUCK");
+        // debugger;
+      }
+      var textTokens = text.toLowerCase().match(/\S+/g) || []
+      var totalFound = 0
+      for (var t in tokens ){
+          if (textTokens.find( (e) => ( e.includes(tokens[t].toLowerCase()) ) ) ){
+            totalFound++;
+          }
+      }
+
+      if ( totalFound == tokens.length ){
+        return true;
+      }
+      return false;
+
+    } catch (e) {
+      console.warn(e)
+      debugger;
+    }
+  }
+
+class QAdder extends Component {
 
   constructor(props) {
     super(props);
-    var data = [];
+    this.selectedQuestions = []
+    this.selectedQuestionCodes = []
 
     this.state = {
       expanded: false,
-      availableQuestions: data,
+      searchBoxText: "",
     };
   }
 
@@ -44,9 +72,35 @@ export default class QAdder extends Component {
     this.setState({expanded: false});
   };
 
+  toggleQuestion = (q) => {
+    var i = this.selectedQuestionCodes.indexOf(q.qcode)
+    if ( i < 0 ){
+        this.selectedQuestionCodes.push(q.qcode)
+        this.selectedQuestions.push(q)
+    } else {
+       this.selectedQuestionCodes.splice(i,1)
+       this.selectedQuestions.splice(i,1)
+    }
+
+    alert(this.selectedQuestionCodes)
+
+  }
+
+  handleSearchChange = (event, value) => {
+
+    this.setState ({searchBoxText: value})
+
+  }
+
   render() {
+
+    if ( !this.props.questions ) {
+      return <div></div>
+    }
+
     return (
-      <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange} style={{position:"absolute",top:50,left:100,zIndex:15, width: "20%"}}>
+      <div style={{width:"100%",height:"100%", backgroundColor:"black", position:"absolute", top:0, left:0, zIndex:20}}>
+      <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange} style={{position:"absolute",top:50,left:100,zIndex:15, width: "25%"}}>
         <CardHeader
           title="Question Adder"
           subtitle="Add a question to the stream"
@@ -66,6 +120,8 @@ export default class QAdder extends Component {
             <TextField
               hintText="Start typing to filter out questions"
               style={{width:600}}
+              value={this.state.searchBoxText}
+              onChange={ (event, value)=>this.handleSearchChange(event, value)}
             />
         </CardTitle>
 
@@ -77,32 +133,23 @@ export default class QAdder extends Component {
         <Card style={{marginLeft:10,marginRight:10}}>
         <CardTitle title="Available Questions" subtitle="Click on the question you want to add" titleStyle={{fontSize:20}}/>
         <CardText>
-        <Table >
-            <TableHeader>
-              <TableRow >
-                <TableHeaderColumn style={{fontSize:16}}>Question Code</TableHeaderColumn>
-                <TableHeaderColumn style={{fontSize:16}}>Description</TableHeaderColumn>
-                <TableHeaderColumn style={{fontSize:16}}>Root Question</TableHeaderColumn>
-                <TableHeaderColumn style={{fontSize:16}}>Included In Waves</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
 
+              <div id='questionsContainer' style={{width:"100%",height:500,overflowY:"scroll",overflowX:"hidden", borderTop:"2px dashed black"}}>
               {
-                this.state.availableQuestions.map( (q,i) => {
-                    return <TableRow key={i}>
-                            <TableRowColumn>{q.qCode}</TableRowColumn>
-                            <TableRowColumn>{q.qDescription}</TableRowColumn>
-                            <TableRowColumn>{q.qRoot}</TableRowColumn>
-                            <TableRowColumn>{q.qWaves.join(" - ")}</TableRowColumn>
-                          </TableRow>
+                this.props.questions.filter(
+                    (e) => {
+                      return tokensInText(
+                              (this.state.searchBoxText.match(/\S+/g) || [] ),
+                               e.qdescription
+                      )
+                    }
+                ).map(
+                    (q,i) => {
+                      return <QAdderQuestion key={i} question={q} togglerFunction = {this.toggleQuestion} selected = {this.selectedQuestionCodes.includes(q.qcode)}> </QAdderQuestion>
                 })
-
               }
-            </TableBody>
-          </Table>
-
-          </CardText>
+              </div>
+        </CardText>
         </Card>
 
         <CardActions style={{textAlign:"right"}}>
@@ -110,6 +157,17 @@ export default class QAdder extends Component {
           <FlatButton label="Accept/Add" onTouchTap={this.props.questionAdder} />
         </CardActions>
       </Card>
+      </div>
     );
   }
 }
+
+//export default Question
+
+const mapStateToProps = (state) => {
+  return {
+    questions : state.questions
+  }
+}
+
+export default connect(mapStateToProps)(QAdder)
